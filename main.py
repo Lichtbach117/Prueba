@@ -4,9 +4,9 @@ from rich.table import Table
 console = Console()
 
 tasks = [
-    {"name": "Preparar informe", "completed": False},
-    {"name": "Revisar código", "completed": True},
-    {"name": "Actualizar documentación", "completed": False},
+    {"name": "Preparar informe", "completed": False, "priority": "Alta"},
+    {"name": "Revisar código", "completed": True, "priority": "Media"},
+    {"name": "Actualizar documentación", "completed": False, "priority": "Baja"},
 ]
 
 
@@ -15,17 +15,38 @@ def show_tasks():
     table.add_column("ID", justify="right")
     table.add_column("Tarea")
     table.add_column("Estado")
+    table.add_column("Prioridad")
 
     for index, task in enumerate(tasks, start=1):
         status = "Completada" if task["completed"] else "Pendiente"
-        table.add_row(str(index), task["name"], status)
+        table.add_row(str(index), task["name"], status, task["priority"])
 
     console.print(table)
+
+def choose_priority():
+    while True:
+        print("INDIQUE LA PRIORIDAD DE LA TAREA")
+        print ("1. Alta")
+        print ("2. Media")
+        print ("3. Baja")
+
+        option = input("Selecciones una opcion:").strip()
+
+        if option == "1":
+            return "Alta"
+        elif option == "2":
+            return "Media"
+        elif option == "3":
+            return "Baja"
+        else:
+            print("Opción inválida.\n")
 
 
 def add_task():
     name = input("Nombre de la tarea: ")
-    tasks.append({"name": name, "completed": False})
+    print("Prioridad de la tarea: ")
+    priority = choose_priority()
+    tasks.append({"name": name, "completed": False, "priority": priority})
     console.print("Tarea agregada.")
 
 
@@ -37,9 +58,6 @@ def complete_task():
         console.print("Tarea actualizada.")
     except (ValueError, IndexError):
         console.print("ID inválido.")
-
-def prueba():
-    print ("hola")
 
 
 def main():
@@ -67,6 +85,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-print("hola mundo1")
-print("hola mundo2")
